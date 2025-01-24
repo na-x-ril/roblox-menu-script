@@ -12,7 +12,13 @@ menuButton.BorderSizePixel = 0
 menuButton.Text = "N"
 menuButton.TextColor3 = Color3.new(1, 1, 1)
 menuButton.TextSize = 24
+menuButton.Font = Enum.Font.Arial
 menuButton.Parent = screenGui
+
+-- Menambahkan corner radius ke tombol menu
+local menuButtonCorner = Instance.new("UICorner")
+menuButtonCorner.CornerRadius = UDim.new(0, 15) -- Radius 15px
+menuButtonCorner.Parent = menuButton
 
 -- Membuat menu
 local menu = Instance.new("Frame")
@@ -24,6 +30,11 @@ menu.BackgroundTransparency = 0.3
 menu.Visible = false
 menu.Parent = screenGui
 
+-- Menambahkan corner radius ke menu
+local menuCorner = Instance.new("UICorner")
+menuCorner.CornerRadius = UDim.new(0, 10) -- Radius 10px
+menuCorner.Parent = menu
+
 -- Membuat tombol close (X)
 local closeButton = Instance.new("TextButton")
 closeButton.Name = "CloseButton"
@@ -34,7 +45,13 @@ closeButton.BorderSizePixel = 0
 closeButton.Text = "X"
 closeButton.TextColor3 = Color3.new(1, 1, 1)
 closeButton.TextSize = 18
+closeButton.Font = Enum.Font.Arial
 closeButton.Parent = menu
+
+-- Menambahkan corner radius ke tombol close
+local closeButtonCorner = Instance.new("UICorner")
+closeButtonCorner.CornerRadius = UDim.new(0, 12) -- Radius 12px (hanya sudut kanan atas)
+closeButtonCorner.Parent = closeButton
 
 -- Membuat tombol alert di dalam menu
 local alertButton = Instance.new("TextButton")
@@ -46,7 +63,13 @@ alertButton.BorderSizePixel = 0
 alertButton.Text = "Tampilkan Alert"
 alertButton.TextColor3 = Color3.new(1, 1, 1)
 alertButton.TextSize = 13
+alertButton.Font = Enum.Font.Arial
 alertButton.Parent = menu
+
+-- Menambahkan corner radius ke tombol alert
+local alertButtonCorner = Instance.new("UICorner")
+alertButtonCorner.CornerRadius = UDim.new(0, 8) -- Radius 8px
+alertButtonCorner.Parent = alertButton
 
 -- Fungsi untuk menampilkan/menyembunyikan menu
 local function toggleMenu()
@@ -71,6 +94,11 @@ local function showAlert()
     alertFrame.Visible = true
     alertFrame.Parent = screenGui
 
+    -- Menambahkan corner radius ke alert frame
+    local alertFrameCorner = Instance.new("UICorner")
+    alertFrameCorner.CornerRadius = UDim.new(0, 30) -- Radius 30px
+    alertFrameCorner.Parent = alertFrame
+
     local alertLabel = Instance.new("TextLabel")
     alertLabel.Name = "AlertLabel"
     alertLabel.Size = UDim2.new(1, 0, 1, 0)
@@ -78,6 +106,7 @@ local function showAlert()
     alertLabel.Text = "Halo [Nama Pemain]"
     alertLabel.TextColor3 = Color3.new(1, 1, 1)
     alertLabel.TextSize = 14
+    alertLabel.Font = Enum.Font.Arial
     alertLabel.Parent = alertFrame
 
     -- Animasi slideDown
