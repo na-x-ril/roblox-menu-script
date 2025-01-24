@@ -48,25 +48,6 @@ alertButton.TextColor3 = Color3.new(1, 1, 1)
 alertButton.TextSize = 13
 alertButton.Parent = menu
 
--- Membuat alert frame
-local alertFrame = Instance.new("Frame")
-alertFrame.Name = "AlertFrame"
-alertFrame.Size = UDim2.new(0, 160, 0, 40)
-alertFrame.Position = UDim2.new(0.5, -80, 0, -20)
-alertFrame.BackgroundColor3 = Color3.new(0, 0, 0)
-alertFrame.BackgroundTransparency = 0.3
-alertFrame.Visible = false
-alertFrame.Parent = screenGui
-
-local alertLabel = Instance.new("TextLabel")
-alertLabel.Name = "AlertLabel"
-alertLabel.Size = UDim2.new(1, 0, 1, 0)
-alertLabel.BackgroundTransparency = 1
-alertLabel.Text = "Halo [Nama Pemain]"
-alertLabel.TextColor3 = Color3.new(1, 1, 1)
-alertLabel.TextSize = 14
-alertLabel.Parent = alertFrame
-
 -- Fungsi untuk menampilkan/menyembunyikan menu
 local function toggleMenu()
     menu.Visible = not menu.Visible
@@ -74,21 +55,43 @@ end
 
 -- Fungsi untuk menampilkan alert dengan animasi
 local function showAlert()
-    alertFrame.Visible = true
+    -- Hapus alert sebelumnya jika ada
+    local existingAlert = screenGui:FindFirstChild("AlertFrame")
+    if existingAlert then
+        existingAlert:Destroy()
+    end
+
+    -- Membuat alert frame baru
+    local alertFrame = Instance.new("Frame")
+    alertFrame.Name = "AlertFrame"
+    alertFrame.Size = UDim2.new(0, 160, 0, 40)
     alertFrame.Position = UDim2.new(0.5, -80, 0, -20)
-    
+    alertFrame.BackgroundColor3 = Color3.new(0, 0, 0)
+    alertFrame.BackgroundTransparency = 0.3
+    alertFrame.Visible = true
+    alertFrame.Parent = screenGui
+
+    local alertLabel = Instance.new("TextLabel")
+    alertLabel.Name = "AlertLabel"
+    alertLabel.Size = UDim2.new(1, 0, 1, 0)
+    alertLabel.BackgroundTransparency = 1
+    alertLabel.Text = "Halo [Nama Pemain]"
+    alertLabel.TextColor3 = Color3.new(1, 1, 1)
+    alertLabel.TextSize = 14
+    alertLabel.Parent = alertFrame
+
     -- Animasi slideDown
     local slideDown = game:GetService("TweenService"):Create(alertFrame, TweenInfo.new(0.5), {Position = UDim2.new(0.5, -80, 0, 10)})
     slideDown:Play()
-    
+
     wait(1.5)
-    
+
     -- Animasi slideUp
     local slideUp = game:GetService("TweenService"):Create(alertFrame, TweenInfo.new(0.5), {Position = UDim2.new(0.5, -80, 0, -20)})
     slideUp:Play()
-    
+
     slideUp.Completed:Wait()
-    alertFrame.Visible = false
+    alertFrame:Destroy() -- Hapus alert setelah animasi selesai
 end
 
 -- Menghubungkan fungsi ke tombol
