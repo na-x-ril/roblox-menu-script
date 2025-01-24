@@ -31,13 +31,13 @@ menu.BackgroundColor3 = Color3.new(0, 0, 0) -- Warna background hitam
 menu.BackgroundTransparency = 0.3 -- Transparansi 0.7 (rgba(0,0,0,0.7))
 menu.Visible = false
 menu.Parent = screenGui
-applyCornerRadius(menu, 0.2) -- Corner radius untuk menu
+applyCornerRadius(menu, 0.1) -- Corner radius untuk menu
 
 -- Buat tombol di samping atas menu untuk menutup menu (lingkaran)
 local closeButton = Instance.new("TextButton")
 closeButton.Name = "CloseButton"
 closeButton.Text = "X"
-closeButton.TextSize = 18
+closeButton.TextSize = 16
 closeButton.TextColor3 = Color3.new(1, 1, 1) -- Warna teks putih
 closeButton.Size = UDim2.new(0, 30, 0, 30)
 closeButton.Position = UDim2.new(1, -35, 0, 5) -- Posisi di samping atas menu
@@ -49,9 +49,9 @@ applyCornerRadius(closeButton, 1) -- Corner radius lingkaran
 local alertButton = Instance.new("TextButton")
 alertButton.Name = "AlertButton"
 alertButton.Text = "Tampilkan Alert"
-alertButton.TextSize = 14
+alertButton.TextSize = 13
 alertButton.TextColor3 = Color3.new(1, 1, 1) -- Warna teks putih
-alertButton.Size = UDim2.new(0, 180, 0, 40)
+alertButton.Size = UDim2.new(0, 150, 0, 40)
 alertButton.Position = UDim2.new(0.1, 0, 0.6, 0) -- Posisi di tengah menu
 alertButton.BackgroundColor3 = Color3.new(0.4, 0.4, 0.4) -- Warna background abu-abu
 alertButton.Parent = menu
@@ -96,7 +96,7 @@ local function showAlert()
     local tweenInfo = TweenInfo.new(0.5, Enum.EasingStyle.Quad, Enum.EasingDirection.Out)
     local tween = game:GetService("TweenService"):Create(alertFrame, tweenInfo, {Position = targetPosition})
     tween:Play()
-    wait(2) -- Alert akan hilang setelah 2 detik
+    wait(1.5) -- Alert akan hilang setelah 2 detik
     tween = game:GetService("TweenService"):Create(alertFrame, tweenInfo, {Position = UDim2.new(0.5, -150, -0.2, 0)})
     tween:Play()
     tween.Completed:Wait()
