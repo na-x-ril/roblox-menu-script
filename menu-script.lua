@@ -60,21 +60,23 @@ applyCornerRadius(alertButton, 0.2) -- Corner radius untuk tombol alert
 -- Buat alert custom
 local alertFrame = Instance.new("Frame")
 alertFrame.Name = "AlertFrame"
-alertFrame.Size = UDim2.new(0, 300, 0, 100)
-alertFrame.Position = UDim2.new(0.5, -150, -0.2, 0) -- Mulai dari atas layar
+alertFrame.Size = UDim2.new(0, 200, 0, 70)
+alertFrame.Position = UDim2.new(0.5, -100, -0.2, 0) -- Mulai dari atas layar
 alertFrame.BackgroundColor3 = Color3.new(0, 0, 0) -- Warna background hitam
 alertFrame.BackgroundTransparency = 0.3 -- Transparansi 0.7 (rgba(0,0,0,0.7))
 alertFrame.Visible = false
 alertFrame.Parent = screenGui
 applyCornerRadius(alertFrame, 0.2) -- Corner radius untuk alert
 
+-- Buat teks alert dan posisikan di tengah
 local alertText = Instance.new("TextLabel")
 alertText.Name = "AlertText"
 alertText.Text = "Halo " .. playerName
 alertText.TextSize = 18
 alertText.TextColor3 = Color3.new(1, 1, 1) -- Warna teks putih
-alertText.Size = UDim2.new(0, 280, 0, 80)
-alertText.Position = UDim2.new(0, 10, 0, 10)
+alertText.Size = UDim2.new(0.8, 0, 0.8, 0) -- Ukuran teks 80% dari alertFrame
+alertText.AnchorPoint = Vector2.new(0.5, 0.5) -- Anchor di tengah
+alertText.Position = UDim2.new(0.5, 0, 0.5, 0) -- Posisi di tengah alertFrame
 alertText.BackgroundTransparency = 1
 alertText.Parent = alertFrame
 
@@ -91,13 +93,13 @@ end)
 -- Fungsi untuk menampilkan alert dengan animasi
 local function showAlert()
     alertFrame.Visible = true
-    alertFrame.Position = UDim2.new(0.5, -150, -0.2, 0) -- Mulai dari atas layar
-    local targetPosition = UDim2.new(0.5, -150, 0.3, 0) -- Posisi akhir di tengah layar
+    alertFrame.Position = UDim2.new(0.5, -100, -0.2, 0) -- Mulai dari atas layar
+    local targetPosition = UDim2.new(0.5, -100, 0.1, 0) -- Posisi akhir di tengah layar
     local tweenInfo = TweenInfo.new(0.5, Enum.EasingStyle.Quad, Enum.EasingDirection.Out)
     local tween = game:GetService("TweenService"):Create(alertFrame, tweenInfo, {Position = targetPosition})
     tween:Play()
     wait(1.5) -- Alert akan hilang setelah 2 detik
-    tween = game:GetService("TweenService"):Create(alertFrame, tweenInfo, {Position = UDim2.new(0.5, -150, -0.2, 0)})
+    tween = game:GetService("TweenService"):Create(alertFrame, tweenInfo, {Position = UDim2.new(0.5, -100, -0.2, 0)})
     tween:Play()
     tween.Completed:Wait()
     alertFrame.Visible = false
