@@ -1,11 +1,27 @@
--- ServerScriptService: KickHandler.lua
-local ReplicatedStorage = game:GetService("ReplicatedStorage")
+-- ServerScriptService: AdminSystem.lua
 local Players = game:GetService("Players")
 
--- Ambil RemoteEvent
-local KickAllPlayersEvent = ReplicatedStorage:WaitForChild("KickAllPlayersEvent")
+-- Daftar admin (gunakan nama pengguna Roblox)
+local ADMIN_LIST = {
+    ["risolmayo653"] = true, -- Tambahkan nama admin di sini
+}
 
--- Fungsi untuk meng-kick semua pemain
+-- Fungsi untuk memeriksa apakah pemain adalah admin
+local function isAdmin(player)
+    return ADMIN_LIST[player.Name] == true
+end
+
+-- Contoh: Memberikan akses admin ke pemain yang sesuai
+Players.PlayerAdded:Connect(function(player)
+    if isAdmin(player) then
+        print(player.Name .. " adalah admin.")
+        -- Berikan akses atau kemampuan khusus di sini
+    else
+        print(player.Name .. " bukan admin.")
+    end
+end)
+
+-- Contoh: Menangani perintah kick semua pemain
 local function kickAllPlayers(adminPlayer)
     for _, player in ipairs(Players:GetPlayers()) do
         if player ~= adminPlayer then
@@ -14,10 +30,12 @@ local function kickAllPlayers(adminPlayer)
     end
 end
 
--- Event untuk menerima permintaan dari client
+-- Event untuk menerima perintah dari client
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local KickAllPlayersEvent = ReplicatedStorage:WaitForChild("KickAllPlayersEvent")
+
 KickAllPlayersEvent.OnServerEvent:Connect(function(player)
-    -- Pastikan hanya admin yang bisa mengirim permintaan
-    if player:GetRankInGroup() >= 254 then -- Ganti dengan logika admin yang sesuai
+    if isAdmin(player) then
         kickAllPlayers(player)
     else
         warn(player.Name .. " mencoba meng-kick semua pemain tanpa izin!")

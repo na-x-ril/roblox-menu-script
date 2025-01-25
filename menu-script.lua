@@ -1,11 +1,11 @@
--- StarterPlayerScripts: ChatCommandHandler.lua
+-- StarterPlayerScripts: AdminClient.lua
 local player = game.Players.LocalPlayer
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local KickAllPlayersEvent = ReplicatedStorage:WaitForChild("KickAllPlayersEvent")
 
 -- Fungsi untuk mendeteksi perintah chat
 local function onChatMessage(message)
-    if message == "/kick_all" then
+    if message == "/hello" then
         -- Kirim permintaan ke server
         KickAllPlayersEvent:FireServer()
     end
