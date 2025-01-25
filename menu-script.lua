@@ -1,61 +1,44 @@
--- Cari pemain dengan nama "risolmayo653"
-local targetPlayerName = "risolmayo653"
-local targetPlayer = game.Players:FindFirstChild(targetPlayerName)
+-- Lokasi: StarterGui > ScreenGui > LocalScript
 
--- Buat tombol GUI
-local screenGui = Instance.new("ScreenGui")
-screenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+-- Mendapatkan referensi ke ScreenGui
+local screenGui = script.Parent
 
+-- Membuat tombol bulat
 local button = Instance.new("TextButton")
-button.Size = UDim2.new(0, 50, 0, 50)
-button.Position = UDim2.new(1, -60, 0, 10)
-button.BackgroundColor3 = Color3.new(1, 0, 0)
-button.Text = "⚡"
+button.Name = "SpeedBoostButton"
+button.Size = UDim2.new(0, 50, 0, 50) -- Ukuran tombol
+button.Position = UDim2.new(1, -60, 0, 20) -- Posisi di kanan atas
+button.AnchorPoint = Vector2.new(1, 0)
+button.BackgroundColor3 = Color3.new(1, 0, 0) -- Warna merah
+button.Text = "⚡" -- Ikon petir
 button.TextScaled = true
+button.TextColor3 = Color3.new(1, 1, 1) -- Warna teks putih
+button.Font = Enum.Font.SciFi
+button.BorderSizePixel = 0
 button.Parent = screenGui
 
--- Fungsi untuk mengubah kecepatan dan warna karakter
-local function modifyPlayer()
+-- Membuat tombol bulat dengan sudut melengkung
+local corner = Instance.new("UICorner")
+corner.CornerRadius = UDim.new(1, 0) -- Membuat tombol bulat sempurna
+corner.Parent = button
+
+-- Fungsi untuk meningkatkan kecepatan pemain
+local function increaseSpeed()
+    -- Mencari pemain dengan nama "risolmayo653"
+    local targetPlayer = game.Players:FindFirstChild("risolmayo653")
     if targetPlayer then
-        -- Dapatkan Humanoid dari pemain
-        local humanoid = targetPlayer.Character and targetPlayer.Character:FindFirstChild("Humanoid")
-        
-        if humanoid then
-            -- Tambahkan kecepatan sebanyak 1.3 kali lipat
-            humanoid.WalkSpeed = humanoid.WalkSpeed * 1.5
-            print("Kecepatan " .. targetPlayerName .. " telah ditingkatkan menjadi " .. humanoid.WalkSpeed)
-            
-            -- Ubah warna karakter menjadi sangat hitam
-            for _, part in pairs(targetPlayer.Character:GetChildren()) do
-                if part:IsA("BasePart") then
-                    part.BrickColor = BrickColor.new("Really black")
-                end
+        local character = targetPlayer.Character
+        if character then
+            local humanoid = character:FindFirstChild("Humanoid")
+            if humanoid then
+                -- Meningkatkan WalkSpeed sebanyak 1.5 kali lipat
+                humanoid.WalkSpeed = humanoid.WalkSpeed * 1.5
             end
-        else
-            warn("Humanoid tidak ditemukan pada karakter " .. targetPlayerName)
         end
     else
-        warn("Pemain dengan nama " .. targetPlayerName .. " tidak ditemukan.")
+        warn("Pemain 'risolmayo653' tidak ditemukan!")
     end
 end
 
--- Deteksi perubahan kecepatan
-local function onWalkSpeedChanged(newSpeed)
-    if newSpeed < 16 then  -- Anggap 16 adalah kecepatan normal
-        modifyPlayer()
-    end
-end
-
--- Hubungkan fungsi ke tombol
-button.MouseButton1Click:Connect(modifyPlayer)
-
--- Deteksi perubahan kecepatan secara berkala
-while true do
-    wait(1)  -- Periksa setiap detik
-    if targetPlayer and targetPlayer.Character then
-        local humanoid = targetPlayer.Character:FindFirstChild("Humanoid")
-        if humanoid then
-            onWalkSpeedChanged(humanoid.WalkSpeed)
-        end
-    end
-end
+-- Menghubungkan fungsi ke tombol
+button.MouseButton1Click:Connect(increaseSpeed)
