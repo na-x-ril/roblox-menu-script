@@ -1,180 +1,96 @@
-local Players = game:GetService("Players")
-local player = Players.LocalPlayer
+-- StarterPlayerScripts: AdminMenuClient.lua
+local player = game.Players.LocalPlayer
+local gui = Instance.new("ScreenGui", player.PlayerGui)
+gui.Name = "AdminMenu"
 
--- Daftar admin yang diizinkan
-local adminUsers = {
-    "risolmayo653" -- Ganti dengan username admin
-}
+-- Ambil RemoteEvent
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local KickAllPlayersEvent = ReplicatedStorage:WaitForChild("KickAllPlayersEvent")
 
--- Fungsi untuk memeriksa apakah pemain adalah admin
-local function isAdmin(player)
-    return table.find(adminUsers, player.Name) ~= nil
+-- Fungsi untuk membuat tombol dengan ikon "N"
+local function createMenuButton()
+    local button = Instance.new("TextButton", gui)
+    button.Name = "MenuButton"
+    button.Text = "N"
+    button.TextSize = 20
+    button.Size = UDim2.new(0, 50, 0, 50)
+    button.Position = UDim2.new(0, 20, 0, 20)
+    button.BackgroundColor3 = Color3.new(0.2, 0.2, 0.2)
+    button.TextColor3 = Color3.new(1, 1, 1)
+    button.BorderSizePixel = 0
+    button.ZIndex = 10
+
+    -- Corner radius untuk tombol
+    local corner = Instance.new("UICorner", button)
+    corner.CornerRadius = UDim.new(0.5, 0)
+
+    return button
 end
 
--- Membuat ScreenGui
-local playerGui = player:WaitForChild("PlayerGui")
-local screenGui = Instance.new("ScreenGui")
-screenGui.Parent = playerGui
+-- Fungsi untuk membuat menu
+local function createMenu()
+    local menu = Instance.new("Frame", gui)
+    menu.Name = "Menu"
+    menu.Size = UDim2.new(0, 200, 0, 300)
+    menu.Position = UDim2.new(0, 80, 0, 20)
+    menu.BackgroundColor3 = Color3.new(0, 0, 0)
+    menu.BackgroundTransparency = 0.3
+    menu.Visible = false
+    menu.ZIndex = 5
 
--- Membuat tombol utama
-local mainButton = Instance.new("TextButton")
-mainButton.Size = UDim2.new(0, 50, 0, 50)
-mainButton.Position = UDim2.new(0.95, -50, 0.95, -50)
-mainButton.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
-mainButton.BackgroundTransparency = 0.5
-mainButton.Text = "N"
-mainButton.TextColor3 = Color3.fromRGB(255, 255, 255)
-mainButton.Parent = screenGui
+    -- Corner radius untuk menu
+    local corner = Instance.new("UICorner", menu)
+    corner.CornerRadius = UDim.new(0.1, 0)
 
--- Membuat frame menu
-local menuFrame = Instance.new("Frame")
-menuFrame.Size = UDim2.new(0, 300, 0, 400)
-menuFrame.Position = UDim2.new(0.5, -150, 0.5, -200)
-menuFrame.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
-menuFrame.BackgroundTransparency = 0.7
-menuFrame.Visible = false
-menuFrame.Parent = screenGui
+    -- Tombol untuk menutup menu (X)
+    local closeButton = Instance.new("TextButton", menu)
+    closeButton.Name = "CloseButton"
+    closeButton.Text = "X"
+    closeButton.TextSize = 20
+    closeButton.Size = UDim2.new(0, 30, 0, 30)
+    closeButton.Position = UDim2.new(1, -35, 0, 5)
+    closeButton.BackgroundColor3 = Color3.new(0.2, 0.2, 0.2)
+    closeButton.TextColor3 = Color3.new(1, 1, 1)
+    closeButton.BorderSizePixel = 0
+    closeButton.ZIndex = 10
 
--- Membuat tombol tutup menu
-local closeButton = Instance.new("TextButton")
-closeButton.Size = UDim2.new(0, 30, 0, 30)
-closeButton.Position = UDim2.new(1, -35, 0, 5)
-closeButton.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
-closeButton.Text = "X"
-closeButton.TextColor3 = Color3.fromRGB(255, 255, 255)
-closeButton.Parent = menuFrame
+    -- Corner radius untuk tombol close
+    local closeCorner = Instance.new("UICorner", closeButton)
+    closeCorner.CornerRadius = UDim.new(0.5, 0)
 
--- Membuat alert frame
-local alertFrame = Instance.new("Frame")
-alertFrame.Size = UDim2.new(0, 300, 0, 100)
-alertFrame.Position = UDim2.new(0.5, -150, -0.1, 0)
-alertFrame.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
-alertFrame.BackgroundTransparency = 0.7
-alertFrame.Visible = false
-alertFrame.Parent = screenGui
+    -- Tombol untuk meng-kick semua pemain
+    local kickAllButton = Instance.new("TextButton", menu)
+    kickAllButton.Name = "KickAllButton"
+    kickAllButton.Text = "Kick All Players"
+    kickAllButton.TextSize = 14
+    kickAllButton.Size = UDim2.new(0, 180, 0, 40)
+    kickAllButton.Position = UDim2.new(0, 10, 0, 50)
+    kickAllButton.BackgroundColor3 = Color3.new(0.2, 0.2, 0.2)
+    kickAllButton.TextColor3 = Color3.new(1, 1, 1)
+    kickAllButton.BorderSizePixel = 0
+    kickAllButton.ZIndex = 10
 
--- Membuat teks alert
-local alertText = Instance.new("TextLabel")
-alertText.Size = UDim2.new(1, 0, 1, 0)
-alertText.BackgroundTransparency = 1
-alertText.Text = "Halo " .. player.Name
-alertText.TextColor3 = Color3.fromRGB(255, 255, 255)
-alertText.Parent = alertFrame
+    -- Corner radius untuk tombol kick all
+    local kickCorner = Instance.new("UICorner", kickAllButton)
+    kickCorner.CornerRadius = UDim.new(0.2, 0)
 
--- Membuat tombol di dalam menu
-local menuButton = Instance.new("TextButton")
-menuButton.Size = UDim2.new(0, 200, 0, 50)
-menuButton.Position = UDim2.new(0.5, -100, 0.3, -25)
-menuButton.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
-menuButton.Text = "Tampilkan Alert"
-menuButton.TextColor3 = Color3.fromRGB(255, 255, 255)
-menuButton.Parent = menuFrame
-
--- Membuat tombol kick (hanya untuk admin)
-local kickButton = Instance.new("TextButton")
-kickButton.Size = UDim2.new(0, 200, 0, 50)
-kickButton.Position = UDim2.new(0.5, -100, 0.6, -25)
-kickButton.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
-kickButton.Text = "Kick Semua Player"
-kickButton.TextColor3 = Color3.fromRGB(255, 255, 255)
-kickButton.Visible = false  -- Disembunyikan secara default
-kickButton.Parent = menuFrame
-
--- Menambahkan corner radius
-local function addCornerRadius(element)
-    local uiCorner = Instance.new("UICorner")
-    uiCorner.CornerRadius = UDim.new(0, 10)
-    uiCorner.Parent = element
+    return menu, closeButton, kickAllButton
 end
 
-addCornerRadius(mainButton)
-addCornerRadius(menuFrame)
-addCornerRadius(alertFrame)
-addCornerRadius(closeButton)
-addCornerRadius(menuButton)
-addCornerRadius(kickButton)
+-- Inisialisasi tombol dan menu
+local menuButton = createMenuButton()
+local menu, closeButton, kickAllButton = createMenu()
 
--- Membuat efek corner radius untuk tombol X menjadi lingkaran
-local xCorner = Instance.new("UICorner")
-xCorner.CornerRadius = UDim.new(1, 0)
-xCorner.Parent = closeButton
-
--- Logika tombol
-mainButton.MouseButton1Click:Connect(function()
-    menuFrame.Visible = true
-    
-    -- Tampilkan tombol kick hanya untuk admin
-    if isAdmin(player) then
-        kickButton.Visible = true
-    else
-        kickButton.Visible = false
-    end
+-- Event untuk membuka dan menutup menu
+menuButton.MouseButton1Click:Connect(function()
+    menu.Visible = not menu.Visible
 end)
 
 closeButton.MouseButton1Click:Connect(function()
-    menuFrame.Visible = false
+    menu.Visible = false
 end)
 
-menuButton.MouseButton1Click:Connect(function()
-    -- Animasi alert
-    alertFrame.Visible = true
-    alertFrame:TweenPosition(UDim2.new(0.5, -150, 0.1, 0), "Out", "Quad", 0.5, true)
-    
-    -- Sembunyikan alert setelah beberapa detik
-    task.wait(3)
-    alertFrame:TweenPosition(UDim2.new(0.5, -150, -0.1, 0), "Out", "Quad", 0.5, true)
-    task.wait(0.5)
-    alertFrame.Visible = false
-end)
-
--- Logika kick untuk admin
-kickButton.MouseButton1Click:Connect(function()
-    if not isAdmin(player) then
-        return  -- Mencegah non-admin menggunakan tombol
-    end
-
-    -- Konfirmasi kick
-    local confirmFrame = Instance.new("Frame")
-    confirmFrame.Size = UDim2.new(0, 250, 0, 150)
-    confirmFrame.Position = UDim2.new(0.5, -125, 0.5, -75)
-    confirmFrame.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
-    confirmFrame.BackgroundTransparency = 0.5
-    confirmFrame.Parent = screenGui
-
-    local confirmText = Instance.new("TextLabel")
-    confirmText.Size = UDim2.new(1, 0, 0.6, 0)
-    confirmText.Position = UDim2.new(0, 0, 0, 0)
-    confirmText.BackgroundTransparency = 1
-    confirmText.Text = "Yakin ingin kick semua player?"
-    confirmText.TextColor3 = Color3.fromRGB(255, 255, 255)
-    confirmText.Parent = confirmFrame
-
-    local yesButton = Instance.new("TextButton")
-    yesButton.Size = UDim2.new(0.4, 0, 0.3, 0)
-    yesButton.Position = UDim2.new(0.1, 0, 0.7, 0)
-    yesButton.BackgroundColor3 = Color3.fromRGB(0, 255, 0)
-    yesButton.Text = "Ya"
-    yesButton.TextColor3 = Color3.fromRGB(255, 255, 255)
-    yesButton.Parent = confirmFrame
-
-    local noButton = Instance.new("TextButton")
-    noButton.Size = UDim2.new(0.4, 0, 0.3, 0)
-    noButton.Position = UDim2.new(0.5, 0, 0.7, 0)
-    noButton.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
-    noButton.Text = "Tidak"
-    noButton.TextColor3 = Color3.fromRGB(255, 255, 255)
-    noButton.Parent = confirmFrame
-
-    yesButton.MouseButton1Click:Connect(function()
-        for _, p in pairs(Players:GetPlayers()) do
-            if p ~= player then
-                p:Kick("Anda telah dikeluarkan oleh admin.")
-            end
-        end
-        confirmFrame:Destroy()  -- Hapus konfirmasi setelah kick
-    end)
-
-    noButton.MouseButton1Click:Connect(function()
-        confirmFrame:Destroy()  -- Hapus konfirmasi jika tidak jadi kick
-    end)
+-- Event untuk mengirim permintaan ke server saat tombol "Kick All Players" diklik
+kickAllButton.MouseButton1Click:Connect(function()
+    KickAllPlayersEvent:FireServer()
 end)
