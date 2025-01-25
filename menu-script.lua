@@ -2,6 +2,7 @@
 local player = game.Players.LocalPlayer
 local gui = Instance.new("ScreenGui", player.PlayerGui)
 gui.Name = "AdminMenu"
+gui.ResetOnSpawn = false -- Pastikan GUI tidak hilang saat respawn
 
 -- Ambil RemoteEvent
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
@@ -15,14 +16,15 @@ local function createMenuButton()
     button.TextSize = 20
     button.Size = UDim2.new(0, 50, 0, 50)
     button.Position = UDim2.new(0, 20, 0, 20)
-    button.BackgroundColor3 = Color3.new(0.2, 0.2, 0.2)
-    button.TextColor3 = Color3.new(1, 1, 1)
-    button.BorderSizePixel = 0
-    button.ZIndex = 10
+    button.BackgroundColor3 = Color3.new(0.2, 0.2, 0.2) -- Warna background tombol
+    button.BackgroundTransparency = 0 -- Pastikan tombol tidak transparan
+    button.TextColor3 = Color3.new(1, 1, 1) -- Warna teks putih
+    button.BorderSizePixel = 0 -- Hilangkan border
+    button.ZIndex = 10 -- Pastikan tombol muncul di atas elemen lain
 
     -- Corner radius untuk tombol
     local corner = Instance.new("UICorner", button)
-    corner.CornerRadius = UDim.new(0.5, 0)
+    corner.CornerRadius = UDim.new(0.5, 0) -- Bentuk lingkaran
 
     return button
 end
@@ -33,14 +35,14 @@ local function createMenu()
     menu.Name = "Menu"
     menu.Size = UDim2.new(0, 200, 0, 300)
     menu.Position = UDim2.new(0, 80, 0, 20)
-    menu.BackgroundColor3 = Color3.new(0, 0, 0)
-    menu.BackgroundTransparency = 0.3
-    menu.Visible = false
-    menu.ZIndex = 5
+    menu.BackgroundColor3 = Color3.new(0, 0, 0) -- Warna background hitam
+    menu.BackgroundTransparency = 0.3 -- Sedikit transparan
+    menu.Visible = false -- Menu awalnya tersembunyi
+    menu.ZIndex = 5 -- ZIndex lebih rendah dari tombol
 
     -- Corner radius untuk menu
     local corner = Instance.new("UICorner", menu)
-    corner.CornerRadius = UDim.new(0.1, 0)
+    corner.CornerRadius = UDim.new(0.1, 0) -- Sudut melengkung
 
     -- Tombol untuk menutup menu (X)
     local closeButton = Instance.new("TextButton", menu)
@@ -49,14 +51,15 @@ local function createMenu()
     closeButton.TextSize = 20
     closeButton.Size = UDim2.new(0, 30, 0, 30)
     closeButton.Position = UDim2.new(1, -35, 0, 5)
-    closeButton.BackgroundColor3 = Color3.new(0.2, 0.2, 0.2)
-    closeButton.TextColor3 = Color3.new(1, 1, 1)
-    closeButton.BorderSizePixel = 0
-    closeButton.ZIndex = 10
+    closeButton.BackgroundColor3 = Color3.new(0.2, 0.2, 0.2) -- Warna background tombol
+    closeButton.BackgroundTransparency = 0 -- Pastikan tombol tidak transparan
+    closeButton.TextColor3 = Color3.new(1, 1, 1) -- Warna teks putih
+    closeButton.BorderSizePixel = 0 -- Hilangkan border
+    closeButton.ZIndex = 10 -- Pastikan tombol muncul di atas elemen lain
 
     -- Corner radius untuk tombol close
     local closeCorner = Instance.new("UICorner", closeButton)
-    closeCorner.CornerRadius = UDim.new(0.5, 0)
+    closeCorner.CornerRadius = UDim.new(0.5, 0) -- Bentuk lingkaran
 
     -- Tombol untuk meng-kick semua pemain
     local kickAllButton = Instance.new("TextButton", menu)
@@ -65,14 +68,15 @@ local function createMenu()
     kickAllButton.TextSize = 14
     kickAllButton.Size = UDim2.new(0, 180, 0, 40)
     kickAllButton.Position = UDim2.new(0, 10, 0, 50)
-    kickAllButton.BackgroundColor3 = Color3.new(0.2, 0.2, 0.2)
-    kickAllButton.TextColor3 = Color3.new(1, 1, 1)
-    kickAllButton.BorderSizePixel = 0
-    kickAllButton.ZIndex = 10
+    kickAllButton.BackgroundColor3 = Color3.new(0.2, 0.2, 0.2) -- Warna background tombol
+    kickAllButton.BackgroundTransparency = 0 -- Pastikan tombol tidak transparan
+    kickAllButton.TextColor3 = Color3.new(1, 1, 1) -- Warna teks putih
+    kickAllButton.BorderSizePixel = 0 -- Hilangkan border
+    kickAllButton.ZIndex = 10 -- Pastikan tombol muncul di atas elemen lain
 
     -- Corner radius untuk tombol kick all
     local kickCorner = Instance.new("UICorner", kickAllButton)
-    kickCorner.CornerRadius = UDim.new(0.2, 0)
+    kickCorner.CornerRadius = UDim.new(0.2, 0) -- Sudut melengkung
 
     return menu, closeButton, kickAllButton
 end
