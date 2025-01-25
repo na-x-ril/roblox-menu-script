@@ -1,129 +1,81 @@
--- Membuat ScreenGui sebagai wadah untuk elemen UI
-local screenGui = Instance.new("ScreenGui")
-screenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+local Players = game:GetService("Players")
+local ScreenGui = Instance.new("ScreenGui")
+local Frame = Instance.new("Frame")
+local MenuButton = Instance.new("TextButton")
+local CloseButton = Instance.new("TextButton")
+local AlertButton = Instance.new("TextButton")
+local AlertFrame = Instance.new("Frame")
+local AlertText = Instance.new("TextLabel")
 
--- Membuat tombol menu
-local menuButton = Instance.new("TextButton")
-menuButton.Name = "MenuButton"
-menuButton.Size = UDim2.new(0, 50, 0, 50)
-menuButton.Position = UDim2.new(1, -60, 0, 10) -- Posisi di atas kanan
-menuButton.BackgroundColor3 = Color3.new(0, 0.4, 0.8)
-menuButton.BorderSizePixel = 0
-menuButton.Text = "N"
-menuButton.TextColor3 = Color3.new(1, 1, 1)
-menuButton.TextSize = 24
-menuButton.Font = Enum.Font.Arial
-menuButton.Parent = screenGui
+-- Set properties for ScreenGui
+ScreenGui.Parent = Players.LocalPlayer:WaitForChild("PlayerGui")
 
--- Menambahkan corner radius ke tombol menu
-local menuButtonCorner = Instance.new("UICorner")
-menuButtonCorner.CornerRadius = UDim.new(0, 15) -- Radius 15px
-menuButtonCorner.Parent = menuButton
+-- Set properties for Frame (Menu)
+Frame.Size = UDim2.new(0, 200, 0, 150)
+Frame.Position = UDim2.new(0.5, -100, 0.5, -75)
+Frame.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+Frame.BorderSizePixel = 0
+Frame.Visible = false
+Frame.Parent = ScreenGui
 
--- Membuat menu
-local menu = Instance.new("Frame")
-menu.Name = "Menu"
-menu.Size = UDim2.new(0, 200, 0, 150)
-menu.Position = UDim2.new(0.5, -100, 0.5, -75) -- Posisi di tengah layar
-menu.BackgroundColor3 = Color3.new(0, 0, 0)
-menu.BackgroundTransparency = 0.3
-menu.Visible = false
-menu.Parent = screenGui
+-- Set properties for MenuButton
+MenuButton.Size = UDim2.new(0, 50, 0, 50)
+MenuButton.Position = UDim2.new(1, -60, 0, 10)
+MenuButton.BackgroundColor3 = Color3.fromRGB(0, 102, 204)
+MenuButton.Text = "N"
+MenuButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+MenuButton.FontSize = Enum.FontSize.Size24
+MenuButton.Parent = ScreenGui
 
--- Menambahkan corner radius ke menu
-local menuCorner = Instance.new("UICorner")
-menuCorner.CornerRadius = UDim.new(0, 10) -- Radius 10px
-menuCorner.Parent = menu
+-- Set properties for CloseButton
+CloseButton.Size = UDim2.new(0, 33, 0, 35)
+CloseButton.Position = UDim2.new(1, -33, 0, 1)
+CloseButton.BackgroundColor3 = Color3.fromRGB(255, 51, 51)
+CloseButton.Text = "X"
+CloseButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+CloseButton.FontSize = Enum.FontSize.Size18
+CloseButton.Parent = Frame
 
--- Membuat tombol close (X)
-local closeButton = Instance.new("TextButton")
-closeButton.Name = "CloseButton"
-closeButton.Size = UDim2.new(0, 33, 0, 35)
-closeButton.Position = UDim2.new(1, -33, 0, 0)
-closeButton.BackgroundColor3 = Color3.new(1, 0.2, 0.2)
-closeButton.BorderSizePixel = 0
-closeButton.Text = "X"
-closeButton.TextColor3 = Color3.new(1, 1, 1)
-closeButton.TextSize = 18
-closeButton.Font = Enum.Font.Arial
-closeButton.Parent = menu
+-- Set properties for AlertButton
+AlertButton.Size = UDim2.new(0, 150, 0, 40)
+AlertButton.BackgroundColor3 = Color3.fromRGB(102, 102, 102)
+AlertButton.Text = "Tampilkan Alert"
+AlertButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+AlertButton.FontSize = Enum.FontSize.Size13
+AlertButton.Parent = Frame
 
--- Menambahkan corner radius ke tombol close
-local closeButtonCorner = Instance.new("UICorner")
-closeButtonCorner.CornerRadius = UDim.new(0, 12) -- Radius 12px (hanya sudut kanan atas)
-closeButtonCorner.Parent = closeButton
+-- Set properties for AlertFrame
+AlertFrame.Size = UDim2.new(0, 160, 0, 40)
+AlertFrame.Position = UDim2.new(0.5, -80, 0, -20)
+AlertFrame.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+AlertFrame.BorderSizePixel = 0
+AlertFrame.Visible = false
+AlertFrame.Parent = ScreenGui
 
--- Membuat tombol alert di dalam menu
-local alertButton = Instance.new("TextButton")
-alertButton.Name = "AlertButton"
-alertButton.Size = UDim2.new(0, 150, 0, 40)
-alertButton.Position = UDim2.new(0.5, -75, 0.5, -20)
-alertButton.BackgroundColor3 = Color3.new(0.4, 0.4, 0.4)
-alertButton.BorderSizePixel = 0
-alertButton.Text = "Tampilkan Alert"
-alertButton.TextColor3 = Color3.new(1, 1, 1)
-alertButton.TextSize = 13
-alertButton.Font = Enum.Font.Arial
-alertButton.Parent = menu
+-- Set properties for AlertText
+AlertText.Size = UDim2.new(1, 0, 1, 0)
+AlertText.BackgroundTransparency = 1
+AlertText.TextColor3 = Color3.fromRGB(255, 255, 255)
+AlertText.FontSize = Enum.FontSize.Size14
+AlertText.Parent = AlertFrame
 
--- Menambahkan corner radius ke tombol alert
-local alertButtonCorner = Instance.new("UICorner")
-alertButtonCorner.CornerRadius = UDim.new(0, 8) -- Radius 8px
-alertButtonCorner.Parent = alertButton
-
--- Fungsi untuk menampilkan/menyembunyikan menu
+-- Function to toggle menu visibility
 local function toggleMenu()
-    menu.Visible = not menu.Visible
+    Frame.Visible = not Frame.Visible
 end
 
--- Fungsi untuk menampilkan alert dengan animasi
+-- Function to show alert with player's name
 local function showAlert()
-    -- Hapus alert sebelumnya jika ada
-    local existingAlert = screenGui:FindFirstChild("AlertFrame")
-    if existingAlert then
-        existingAlert:Destroy()
-    end
-
-    -- Membuat alert frame baru
-    local alertFrame = Instance.new("Frame")
-    alertFrame.Name = "AlertFrame"
-    alertFrame.Size = UDim2.new(0, 160, 0, 40)
-    alertFrame.Position = UDim2.new(0.5, -80, 0, -20)
-    alertFrame.BackgroundColor3 = Color3.new(0, 0, 0)
-    alertFrame.BackgroundTransparency = 0.3
-    alertFrame.Visible = true
-    alertFrame.Parent = screenGui
-
-    -- Menambahkan corner radius ke alert frame
-    local alertFrameCorner = Instance.new("UICorner")
-    alertFrameCorner.CornerRadius = UDim.new(0, 30) -- Radius 30px
-    alertFrameCorner.Parent = alertFrame
-
-    local alertLabel = Instance.new("TextLabel")
-    alertLabel.Name = "AlertLabel"
-    alertLabel.Size = UDim2.new(1, 0, 1, 0)
-    alertLabel.BackgroundTransparency = 1
-    alertLabel.Text = "Halo [Nama Pemain]"
-    alertLabel.TextColor3 = Color3.new(1, 1, 1)
-    alertLabel.TextSize = 14
-    alertLabel.Font = Enum.Font.Arial
-    alertLabel.Parent = alertFrame
-
-    -- Animasi slideDown
-    local slideDown = game:GetService("TweenService"):Create(alertFrame, TweenInfo.new(0.5), {Position = UDim2.new(0.5, -80, 0, 10)})
-    slideDown:Play()
-
-    wait(1.5)
-
-    -- Animasi slideUp
-    local slideUp = game:GetService("TweenService"):Create(alertFrame, TweenInfo.new(0.5), {Position = UDim2.new(0.5, -80, 0, -20)})
-    slideUp:Play()
-
-    slideUp.Completed:Wait()
-    alertFrame:Destroy() -- Hapus alert setelah animasi selesai
+    local playerName = Players.LocalPlayer.Name
+    AlertText.Text = "Halo " .. playerName
+    AlertFrame.Visible = true
+    AlertFrame.Position = UDim2.new(0.5, -80, 0, -20)
+    
+    wait(1.5) -- Wait for 1.5 seconds
+    AlertFrame.Visible = false
 end
 
--- Menghubungkan fungsi ke tombol
-menuButton.MouseButton1Click:Connect(toggleMenu)
-closeButton.MouseButton1Click:Connect(toggleMenu)
-alertButton.MouseButton1Click:Connect(showAlert)
+-- Connect button events
+MenuButton.MouseButton1Click:Connect(toggleMenu)
+CloseButton.MouseButton1Click:Connect(toggleMenu)
+AlertButton.MouseButton1Click:Connect(showAlert)
