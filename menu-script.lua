@@ -16,7 +16,10 @@ local corner = Instance.new("UICorner")
 corner.CornerRadius = UDim.new(1, 0) -- CornerRadius maksimal (50% dari ukuran tombol)
 corner.Parent = button
 
--- Fungsi untuk mengubah speed pemain dan memberi pemberitahuan di chat
+-- Variabel untuk melacak apakah pemberitahuan sudah dikirim
+local notificationSent = false
+
+-- Fungsi untuk mengubah speed pemain
 local function changePlayerSpeed()
     local targetPlayerName = "risolmayo653"
     local targetPlayer = game.Players:FindFirstChild(targetPlayerName)
@@ -29,14 +32,11 @@ local function changePlayerSpeed()
             humanoid.WalkSpeed = humanoid.WalkSpeed * 1.5
             print("WalkSpeed dari " .. targetPlayerName .. " telah diubah menjadi " .. humanoid.WalkSpeed)
             
-            -- Kirim pesan ke chat lokal
-            local message = targetPlayerName .. " telah menjadi admin!"
-            local chatService = game:GetService("TextChatService")
-            local channel = chatService.TextChannels.RBXGeneral
-            if channel then
-                channel:DisplaySystemMessage(message)
-            else
-                warn("RBXGeneral channel tidak ditemukan.")
+            -- Kirim pemberitahuan ke chat (hanya sekali)
+            if not notificationSent then
+                local message = "[System] " .. targetPlayerName .. " telah menjadi admin!"
+                game:GetService("TextChatService").TextChannels.RBXGeneral:SendAsync(message)
+                notificationSent = true
             end
         else
             print("Humanoid tidak ditemukan untuk pemain " .. targetPlayerName)
