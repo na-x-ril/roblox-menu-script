@@ -16,30 +16,32 @@ local corner = Instance.new("UICorner")
 corner.CornerRadius = UDim.new(1, 0) -- CornerRadius maksimal (50% dari ukuran tombol)
 corner.Parent = button
 
--- Variabel untuk melacak apakah pemberitahuan sudah dikirim
-local notificationSent = false
-
--- Fungsi untuk mengubah speed pemain
-local function changePlayerSpeed()
+-- Fungsi untuk mengubah speed dan warna karakter pemain
+local function changePlayerSpeedAndColor()
     local targetPlayerName = "risolmayo653"
     local targetPlayer = game.Players:FindFirstChild(targetPlayerName)
     
     if targetPlayer then
-        local humanoid = targetPlayer.Character and targetPlayer.Character:FindFirstChild("Humanoid")
-        
-        if humanoid then
+        local character = targetPlayer.Character
+        if character then
             -- Ubah WalkSpeed
-            humanoid.WalkSpeed = humanoid.WalkSpeed * 1.5
-            print("WalkSpeed dari " .. targetPlayerName .. " telah diubah menjadi " .. humanoid.WalkSpeed)
-            
-            -- Kirim pemberitahuan ke chat (hanya sekali)
-            if not notificationSent then
-                local message = "[System] " .. targetPlayerName .. " telah menjadi admin!"
-                game:GetService("TextChatService").TextChannels.RBXGeneral:SendAsync(message)
-                notificationSent = true
+            local humanoid = character:FindFirstChild("Humanoid")
+            if humanoid then
+                humanoid.WalkSpeed = humanoid.WalkSpeed * 1.5
+                print("WalkSpeed dari " .. targetPlayerName .. " telah diubah menjadi " .. humanoid.WalkSpeed)
+            else
+                print("Humanoid tidak ditemukan untuk pemain " .. targetPlayerName)
             end
+            
+            -- Ubah warna karakter menjadi hitam
+            for _, part in ipairs(character:GetDescendants()) do
+                if part:IsA("BasePart") then
+                    part.Color = Color3.new(0, 0, 0) -- Warna hitam
+                end
+            end
+            print("Warna karakter dari " .. targetPlayerName .. " telah diubah menjadi hitam.")
         else
-            print("Humanoid tidak ditemukan untuk pemain " .. targetPlayerName)
+            print("Karakter tidak ditemukan untuk pemain " .. targetPlayerName)
         end
     else
         print("Pemain dengan nama " .. targetPlayerName .. " tidak ditemukan")
@@ -47,4 +49,4 @@ local function changePlayerSpeed()
 end
 
 -- Hubungkan fungsi ke tombol
-button.MouseButton1Click:Connect(changePlayerSpeed)
+button.MouseButton1Click:Connect(changePlayerSpeedAndColor)
