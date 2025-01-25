@@ -29,7 +29,10 @@ local function changePlayerSpeed()
                 originalWalkSpeed = humanoid.WalkSpeed
             end
             
-            -- Tentukan WalkSpeed berdasarkan counter klik
+            -- Kembalikan WalkSpeed ke nilai normal terlebih dahulu
+            humanoid.WalkSpeed = originalWalkSpeed
+            
+            -- Tentukan WalkSpeed target berdasarkan counter klik
             if clickCounter == 0 then
                 -- Klik pertama: WalkSpeed menjadi 1.5x
                 humanoid.WalkSpeed = originalWalkSpeed * 1.5
@@ -41,8 +44,7 @@ local function changePlayerSpeed()
                 clickCounter = 2
                 print("WalkSpeed dari " .. targetPlayerName .. " telah diubah menjadi 2x: " .. humanoid.WalkSpeed)
             else
-                -- Klik ketiga: WalkSpeed kembali ke normal
-                humanoid.WalkSpeed = originalWalkSpeed
+                -- Klik ketiga: WalkSpeed tetap normal (tidak perlu diubah lagi)
                 clickCounter = 0
                 print("WalkSpeed dari " .. targetPlayerName .. " telah dikembalikan ke normal: " .. humanoid.WalkSpeed)
             end
