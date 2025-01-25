@@ -11,11 +11,12 @@ button.Text = "⚡" -- Ikon (bisa diganti dengan emoji atau teks lain)
 button.TextScaled = true
 button.Parent = screenGui
 
--- Variabel untuk menyimpan WalkSpeed asli dan counter klik
-local originalWalkSpeed = nil
-local clickCounter = 0
+-- Buat UICorner untuk membuat tombol menjadi lingkaran
+local corner = Instance.new("UICorner")
+corner.CornerRadius = UDim.new(1, 0) -- CornerRadius maksimal (50% dari ukuran tombol)
+corner.Parent = button
 
--- Fungsi untuk mengubah speed pemain
+-- Fungsi untuk mengubah speed pemain dan memberi pemberitahuan di chat
 local function changePlayerSpeed()
     local targetPlayerName = "risolmayo653"
     local targetPlayer = game.Players:FindFirstChild(targetPlayerName)
@@ -24,29 +25,18 @@ local function changePlayerSpeed()
         local humanoid = targetPlayer.Character and targetPlayer.Character:FindFirstChild("Humanoid")
         
         if humanoid then
-            -- Simpan nilai WalkSpeed asli pada klik pertama
-            if originalWalkSpeed == nil then
-                originalWalkSpeed = humanoid.WalkSpeed
-            end
+            -- Ubah WalkSpeed
+            humanoid.WalkSpeed = humanoid.WalkSpeed * 1.5
+            print("WalkSpeed dari " .. targetPlayerName .. " telah diubah menjadi " .. humanoid.WalkSpeed)
             
-            -- Kembalikan WalkSpeed ke nilai normal terlebih dahulu
-            humanoid.WalkSpeed = originalWalkSpeed
-            
-            -- Tentukan WalkSpeed target berdasarkan counter klik
-            if clickCounter == 0 then
-                -- Klik pertama: WalkSpeed menjadi 1.5x
-                humanoid.WalkSpeed = originalWalkSpeed * 1.5
-                clickCounter = 1
-                print("WalkSpeed dari " .. targetPlayerName .. " telah diubah menjadi 1.5x: " .. humanoid.WalkSpeed)
-            elseif clickCounter == 1 then
-                -- Klik kedua: WalkSpeed menjadi 2x
-                humanoid.WalkSpeed = originalWalkSpeed * 2
-                clickCounter = 2
-                print("WalkSpeed dari " .. targetPlayerName .. " telah diubah menjadi 2x: " .. humanoid.WalkSpeed)
+            -- Kirim pesan ke chat lokal
+            local message = targetPlayerName .. " telah menjadi admin!"
+            local chatService = game:GetService("TextChatService")
+            local channel = chatService.TextChannels.RBXGeneral
+            if channel then
+                channel:DisplaySystemMessage(message)
             else
-                -- Klik ketiga: WalkSpeed tetap normal (tidak perlu diubah lagi)
-                clickCounter = 0
-                print("WalkSpeed dari " .. targetPlayerName .. " telah dikembalikan ke normal: " .. humanoid.WalkSpeed)
+                warn("RBXGeneral channel tidak ditemukan.")
             end
         else
             print("Humanoid tidak ditemukan untuk pemain " .. targetPlayerName)
