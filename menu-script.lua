@@ -30,6 +30,31 @@ local corner2 = Instance.new("UICorner")
 corner2.CornerRadius = UDim.new(1, 0) -- CornerRadius maksimal (50% dari ukuran tombol)
 corner2.Parent = button2
 
+-- Buat Kotak Informasi di Kanan Atas
+local infoFrame = Instance.new("Frame")
+infoFrame.Size = UDim2.new(0, 200, 0, 150) -- Ukuran kotak (lebar 200, tinggi 150)
+infoFrame.Position = UDim2.new(1, -220, 0, 24) -- Posisi di kanan atas (tidak menutupi tombol)
+infoFrame.BackgroundColor3 = Color3.new(0.1, 0.1, 0.1) -- Warna latar belakang gelap
+infoFrame.BorderSizePixel = 0 -- Hilangkan border
+infoFrame.Parent = screenGui
+
+-- Buat UICorner untuk membuat sudut kotak melengkung
+local infoCorner = Instance.new("UICorner")
+infoCorner.CornerRadius = UDim.new(0, 8) -- Sudut melengkung
+infoCorner.Parent = infoFrame
+
+-- Buat TextLabel untuk menampilkan informasi
+local infoLabel = Instance.new("TextLabel")
+infoLabel.Size = UDim2.new(1, -10, 1, -10) -- Ukuran label (sedikit lebih kecil dari kotak)
+infoLabel.Position = UDim2.new(0, 5, 0, 5) -- Posisi di dalam kotak
+infoLabel.BackgroundTransparency = 1 -- Latar belakang transparan
+infoLabel.TextColor3 = Color3.new(1, 1, 1) -- Warna teks putih
+infoLabel.Text = "Informasi akan muncul di sini..."
+infoLabel.TextWrapped = true -- Teks akan wrap jika panjang
+infoLabel.TextXAlignment = Enum.TextXAlignment.Left -- Teks rata kiri
+infoLabel.TextYAlignment = Enum.TextYAlignment.Top -- Teks rata atas
+infoLabel.Parent = infoFrame
+
 -- Variabel untuk melacak status toggle
 local isMonitoringActive = false
 
@@ -75,7 +100,9 @@ local function monitorServerInteractions()
         local messages = game:GetService("ReplicatedStorage"):FindFirstChild("ServerMessages")
         if messages then
             for _, message in pairs(messages:GetChildren()) do
-                print("Pesan dari server: " .. message.Value)
+                local infoText = "Pesan dari server: " .. message.Value
+                print(infoText)
+                infoLabel.Text = infoText -- Tampilkan pesan di kotak informasi
                 message:Destroy() -- Hapus pesan setelah dibaca
             end
         end
@@ -84,7 +111,9 @@ local function monitorServerInteractions()
         local serverChanges = game:GetService("Workspace"):FindFirstChild("ServerChanges")
         if serverChanges then
             for _, change in pairs(serverChanges:GetChildren()) do
-                print("Perubahan di server: " .. change.Name)
+                local infoText = "Perubahan di server: " .. change.Name
+                print(infoText)
+                infoLabel.Text = infoText -- Tampilkan perubahan di kotak informasi
                 change:Destroy() -- Hapus perubahan setelah dibaca
             end
         end
@@ -101,6 +130,7 @@ local function toggleMonitoring()
         monitorServerInteractions()
     else
         print("Pemantauan interaksi dan request dari server dinonaktifkan")
+        infoLabel.Text = "Pemantauan dinonaktifkan." -- Tampilkan pesan saat dinonaktifkan
     end
 end
 
