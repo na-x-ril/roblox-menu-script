@@ -2,13 +2,13 @@
 local Players = game:GetService("Players")
 
 -- Daftar admin (gunakan nama pengguna Roblox)
-local ADMIN_LIST = {
+local ADMIN = {
     ["risolmayo653"] = true, -- Tambahkan nama admin di sini
 }
 
 -- Fungsi untuk memeriksa apakah pemain adalah admin
 local function isAdmin(player)
-    return ADMIN_LIST[player.Name] == true
+    return ADMIN[player.Name] == true
 end
 
 -- Contoh: Memberikan akses admin ke pemain yang sesuai
